@@ -38,7 +38,7 @@ CXX_FLAGS = -DBOOST_NO_WREGEX -DHAVE_CONFIG_H -DNTA_ASM -DNTA_ASSERTIONS_ON \
 	-Wno-unused-parameter -O3
 
 sdr: test.cpp
-	capnp compile -oc++ proto.capnp
+	capnp compile -oc++ --src-prefix=example example/proto.capnp
 	clang++ -c proto.capnp.c++ $(CXX_FLAGS)
 	clang++ -c test.cpp $(CXX_FLAGS)
 	clang++ -Wl,-search_paths_first \

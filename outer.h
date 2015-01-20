@@ -7,12 +7,10 @@
 #include <capnp/serialize.h>
 #include <kj/std/iostream.h>
 #include <iostream>
-#include <nupic/types/Types.hpp>
 
 #include "inner.h"
 
 using namespace std;
-using namespace nupic;
 
 namespace example {
 
@@ -21,14 +19,14 @@ namespace example {
       Outer() {
         fieldA_ = 0.0;
       }
-      Outer(float fa, UInt f1, string f2) {
+      Outer(float fa, uint f1, string f2) {
         fieldA_ = fa;
         inner_.setF1(f1);
         inner_.setF2(f2);
       }
       virtual ~Outer() {};
 
-      UInt getFA() {
+      uint getFA() {
         return fieldA_;
       }
 

@@ -1,8 +1,8 @@
 
+#include <assert.h>
 #include <fstream>
 #include <string>
 #include <unistd.h>
-#include <nupic/utils/Log.hpp>
 #include "inner.h"
 #include "outer.h"
 
@@ -23,12 +23,12 @@ int main(int argc, const char* argv[]) {
   unlink("test.bin");
 
   // assertions
-  NTA_ASSERT((a.getFA() - 3.14159) < 0.0000001);
-  NTA_ASSERT((b.getFA() - 3.14159) < 0.0000001);
+  assert((a.getFA() - 3.14159) < 0.0000001);
+  assert((b.getFA() - 3.14159) < 0.0000001);
   auto innera = a.getInner();
   auto innerb = b.getInner();
-  NTA_ASSERT(innera.getF1() == 11);
-  NTA_ASSERT(innerb.getF1() == 11);
-  NTA_ASSERT(innera.getF2() == s);
-  NTA_ASSERT(innerb.getF2() == s);
+  assert(innera.getF1() == 11);
+  assert(innerb.getF1() == 11);
+  assert(innera.getF2() == s);
+  assert(innerb.getF2() == s);
 }

@@ -7,10 +7,8 @@
 #include <capnp/serialize.h>
 #include <kj/std/iostream.h>
 #include <iostream>
-#include <nupic/types/Types.hpp>
 
 using namespace std;
-using namespace nupic;
 
 namespace example {
 
@@ -20,17 +18,17 @@ namespace example {
         f1_ = 0;
         f2_ = "none";
       };
-      Inner(UInt f1, string f2) {
+      Inner(uint f1, string f2) {
         f1_ = f1;
         f2_ = f2;
       }
       virtual ~Inner() {};
 
-      UInt getF1() {
+      uint getF1() {
         return f1_;
       }
 
-      void setF1(UInt v) {
+      void setF1(uint v) {
         f1_ = v;
       }
 
@@ -67,7 +65,7 @@ namespace example {
         read(proto);
       }
     private:
-      UInt f1_;
+      uint f1_;
       string f2_;
   };
 
