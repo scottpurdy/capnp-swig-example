@@ -2,11 +2,13 @@
 #ifndef EXAMPLE_INNER_H
 #define EXAMPLE_INNER_H
 
+#include <fstream>
+#include <iostream>
+
 #include "proto.capnp.h"
 #include <capnp/message.h>
 #include <capnp/serialize.h>
 #include <kj/std/iostream.h>
-#include <iostream>
 
 using namespace std;
 
