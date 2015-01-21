@@ -24,6 +24,7 @@ class Hybrid(object):
   def write(self, proto):
     proto.fieldA = self.fieldA
     inner = proto.inner
+    print type(inner), dir(inner)
     # TODO: `inner` is a pycapnp object but we need to convert it in SWIG interface
     # to a raw InnerProto::Builder instance that the SWIG-wrapper Inner.write function
     # understands.
