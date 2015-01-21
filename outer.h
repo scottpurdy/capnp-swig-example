@@ -19,14 +19,14 @@ namespace example {
       Outer() {
         fieldA_ = 0.0;
       }
-      Outer(float fa, uint f1, string f2) {
+      Outer(float fa, int f1, const char* f2) {
         fieldA_ = fa;
         inner_.setF1(f1);
         inner_.setF2(f2);
       }
       virtual ~Outer() {};
 
-      uint getFA() {
+      float getFA() {
         return fieldA_;
       }
 
@@ -48,6 +48,12 @@ namespace example {
         capnp::writeMessage(outputStream, message);
       }
 
+      void write(const char* path) const {
+        ofstream f(path);
+        write(f);
+        f.close();
+      }
+
       void read(OuterProto::Reader& proto) {
         fieldA_ = proto.getFieldA();
         auto innerProto = proto.getInner();
@@ -60,6 +66,13 @@ namespace example {
         OuterProto::Reader proto = message.getRoot<OuterProto>();
         read(proto);
       }
+
+      void read(const char* path) {
+        ifstream f(path);
+        read(f);
+        f.close();
+      }
+
     private:
       float fieldA_;
       Inner inner_;

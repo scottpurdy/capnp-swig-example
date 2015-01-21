@@ -14,6 +14,7 @@ sdr: test.cpp
 		-lc++abi -liconv -lsqlite3 -lkj -lcapnp -framework CoreServices -framework Accelerate \
 		proto.capnp.o test.o -o test
 	swig -python -c++ -Wall bindings.i
+	mv bindings.py example/bindings.py
 	clang++ -c bindings_wrap.cxx -std=c++11 -stdlib=libc++ \
 		-I/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7/
-	clang++ -lpython -shared bindings_wrap.o -o example/_bindings.so
+	clang++ -lpython -lkj -lcapnp -shared bindings_wrap.o -o example/_bindings.so

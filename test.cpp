@@ -1,13 +1,12 @@
 
 #include <assert.h>
 #include <fstream>
-#include <string>
 #include <unistd.h>
 #include "inner.h"
 #include "outer.h"
 
 void testOuter() {
-  string s("blah");
+  const char* s = "blah";
 
   example::Outer a(3.14159, 11, s);
 
@@ -34,7 +33,7 @@ void testOuter() {
 }
 
 void testInner() {
-  string s("blah");
+  const char* s = "blah";
 
   example::Inner a(11, s);
 

@@ -20,25 +20,25 @@ namespace example {
         f1_ = 0;
         f2_ = "none";
       };
-      Inner(uint f1, string f2) {
+      Inner(int f1, const char* f2) {
         f1_ = f1;
         f2_ = f2;
       }
       virtual ~Inner() {};
 
-      uint getF1() {
+      int getF1() {
         return f1_;
       }
 
-      void setF1(uint v) {
+      void setF1(int v) {
         f1_ = v;
       }
 
-      string getF2() {
+      const char* getF2() {
         return f2_;
       }
 
-      void setF2(string v) {
+      void setF2(const char* v) {
         f2_ = v;
       }
 
@@ -57,7 +57,7 @@ namespace example {
 
       void read(InnerProto::Reader& proto) {
         f1_ = proto.getF1();
-        f2_ = proto.getF2();
+        f2_ = proto.getF2().cStr();
       }
 
       void read(ifstream& f) {
@@ -67,8 +67,8 @@ namespace example {
         read(proto);
       }
     private:
-      uint f1_;
-      string f2_;
+      int f1_;
+      const char* f2_;
   };
 
 }
