@@ -38,10 +38,10 @@ struct pycapnp_DynamicStructBuilder {
 
   inline void write(PyObject* pyBuilder) const {
     // Get InnerProto::Builder from pyBuilder object
-    pycapnp_DynamicStructBuilder* dynamicStruct = (pycapnp_DynamicStructBuilder*)pyBuilder;
-    ::capnp::DynamicStruct::Builder* builder = &dynamicStruct->thisptr;
-    InnerProto::Builder* innerProto = (InnerProto::Builder*)builder;
-    self->write(*innerProto);
+    //pycapnp_DynamicStructBuilder* dynamicStruct = (pycapnp_DynamicStructBuilder*)pyBuilder;
+    //::capnp::DynamicStruct::Builder* builder = &dynamicStruct->thisptr;
+    //InnerProto::Builder* innerProto = (InnerProto::Builder*)builder;
+    //self->write(*innerProto);
   }
 
 }
