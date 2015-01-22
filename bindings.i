@@ -4,18 +4,14 @@
 
 #include <Python.h>
 
+#include <capnp/any.h>
 #include <capnp/dynamic.h>
 #include <capnp/message.h>
 
+#include "proto.capnp.h"
+
 #include "inner.h"
 #include "outer.h"
-
-// Not used currently
-struct pycapnp_MessageBuilder {
-  PyObject_HEAD
-  void *__pyx_vtab;
-  ::capnp::MessageBuilder *thisptr;
-};
 
 struct pycapnp_DynamicStructBuilder {
   PyObject_HEAD
@@ -27,6 +23,16 @@ struct pycapnp_DynamicStructBuilder {
   PyObject *_schema;
 };
 
+struct pycapnp__DynamicStructReader {
+  PyObject_HEAD
+  void *__pyx_vtab;
+   ::capnp::DynamicStruct::Reader thisptr;
+  PyObject *_parent;
+  int is_root;
+  PyObject *_obj_to_pin;
+  PyObject *_schema;
+};
+
 %}
 
 %include "inner.h"
@@ -34,14 +40,19 @@ struct pycapnp_DynamicStructBuilder {
 
 %extend example::Inner
 {
-  #include "proto.capnp.h"
 
   inline void write(PyObject* pyBuilder) const {
-    // Get InnerProto::Builder from pyBuilder object
-    //pycapnp_DynamicStructBuilder* dynamicStruct = (pycapnp_DynamicStructBuilder*)pyBuilder;
-    //::capnp::DynamicStruct::Builder* builder = &dynamicStruct->thisptr;
-    //InnerProto::Builder* innerProto = (InnerProto::Builder*)builder;
-    //self->write(*innerProto);
+    pycapnp_DynamicStructBuilder* dynamicStruct = (pycapnp_DynamicStructBuilder*)pyBuilder;
+    ::capnp::DynamicStruct::Builder& builder = dynamicStruct->thisptr;
+    InnerProto::Builder innerProto = builder.as<::capnp::AnyStruct>().as<InnerProto>();
+    self->write(innerProto);
+  }
+
+  inline void read(PyObject* pyReader) {
+    pycapnp__DynamicStructReader * dynamicStruct = (pycapnp__DynamicStructReader*)pyReader;
+    ::capnp::DynamicStruct::Reader& reader = dynamicStruct->thisptr;
+    InnerProto::Reader innerProto = reader.as<::capnp::AnyStruct>().as<InnerProto>();
+    self->read(innerProto);
   }
 
 }

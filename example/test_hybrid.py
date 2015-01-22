@@ -24,8 +24,8 @@ class TestHybrid(unittest.TestCase):
         b.readFromFile(f)
 
       # Validate
-      self.assertAlmostEqual(b.getFA(), 3.14159, places=5)
-      inner = b.getInner()
+      self.assertAlmostEqual(b.fieldA, 3.14159, places=5)
+      inner = b.inner
       self.assertEqual(inner.getF1(), 17)
       self.assertEqual(inner.getF2(), "test")
     finally:
