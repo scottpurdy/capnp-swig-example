@@ -41,6 +41,36 @@ struct pycapnp_DynamicStructReader {
   PyObject *_schema;
 };
 
+template<class T>
+typename T::Builder getBuilder(PyObject* pyBuilder)
+{
+  PyObject* capnpModule = PyImport_AddModule("capnp.lib.capnp");
+  PyObject* pySchemaParser = PyObject_GetAttrString(capnpModule,
+                                                    "_global_schema_parser");
+  pycapnp_SchemaParser* schemaParser = (pycapnp_SchemaParser*)pySchemaParser;
+  schemaParser->thisptr->loadCompiledTypeAndDependencies<T>();
+
+  pycapnp_DynamicStructBuilder* dynamicStruct = (pycapnp_DynamicStructBuilder*)pyBuilder;
+  ::capnp::DynamicStruct::Builder& builder = dynamicStruct->thisptr;
+  typename T::Builder proto = builder.as<T>();
+  return proto;
+}
+
+template<class T>
+typename T::Reader getReader(PyObject* pyReader)
+{
+  PyObject* capnpModule = PyImport_AddModule("capnp.lib.capnp");
+  PyObject* pySchemaParser = PyObject_GetAttrString(capnpModule,
+                                                    "_global_schema_parser");
+  pycapnp_SchemaParser* schemaParser = (pycapnp_SchemaParser*)pySchemaParser;
+  schemaParser->thisptr->loadCompiledTypeAndDependencies<InnerProto>();
+
+  pycapnp_DynamicStructReader* dynamicStruct = (pycapnp_DynamicStructReader*)pyReader;
+  ::capnp::DynamicStruct::Reader& reader = dynamicStruct->thisptr;
+  typename T::Reader proto = reader.as<T>();
+  return proto;
+}
+
 %}
 
 %include "inner.h"
@@ -51,28 +81,12 @@ struct pycapnp_DynamicStructReader {
 
   inline void write(PyObject* pyBuilder) const
   {
-    PyObject* capnpModule = PyImport_AddModule("capnp.lib.capnp");
-    PyObject* pySchemaParser = PyObject_GetAttrString(capnpModule,
-                                                      "_global_schema_parser");
-    pycapnp_SchemaParser* schemaParser = (pycapnp_SchemaParser*)pySchemaParser;
-    schemaParser->thisptr->loadCompiledTypeAndDependencies<InnerProto>();
-
-    pycapnp_DynamicStructBuilder* dynamicStruct = (pycapnp_DynamicStructBuilder*)pyBuilder;
-    ::capnp::DynamicStruct::Builder& builder = dynamicStruct->thisptr;
-    InnerProto::Builder innerProto = builder.as<InnerProto>();
+    InnerProto::Builder innerProto = getBuilder<InnerProto>(pyBuilder);
     self->write(innerProto);
   }
 
   inline void read(PyObject* pyReader) {
-    PyObject* capnpModule = PyImport_AddModule("capnp.lib.capnp");
-    PyObject* pySchemaParser = PyObject_GetAttrString(capnpModule,
-                                                      "_global_schema_parser");
-    pycapnp_SchemaParser* schemaParser = (pycapnp_SchemaParser*)pySchemaParser;
-    schemaParser->thisptr->loadCompiledTypeAndDependencies<InnerProto>();
-
-    pycapnp_DynamicStructReader * dynamicStruct = (pycapnp_DynamicStructReader*)pyReader;
-    ::capnp::DynamicStruct::Reader& reader = dynamicStruct->thisptr;
-    InnerProto::Reader innerProto = reader.as<InnerProto>();
+    InnerProto::Reader innerProto = getReader<InnerProto>(pyReader);
     self->read(innerProto);
   }
 
