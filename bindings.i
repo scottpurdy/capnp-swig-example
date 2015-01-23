@@ -50,17 +50,16 @@ struct pycapnp_DynamicStructReader {
 
   %pythoncode %{
 
-    import capnp
+    import capnp.lib.capnp as lcapnp
 
     def write(builder):
-      schemaParser = capnp.SchemaParser.current???
-      self.this.write(builder, schemaParser)
+      self.this.write(builder, lcapnp._global_schema_parser)
 
   %}
 
   inline void write(PyObject* pyBuilder, PyObject* pySchemaParser) const {
     pycapnp_SchemaParser* schemaParser = (pycapnp_SchemaParser*)pySchemaParser;
-    schemaParser->loadCompiledTypeAndDependencies<InnerProto>();
+    schemaParser->thisptr->loadCompiledTypeAndDependencies<InnerProto>();
 
     pycapnp_DynamicStructBuilder* dynamicStruct = (pycapnp_DynamicStructBuilder*)pyBuilder;
     ::capnp::DynamicStruct::Builder& builder = dynamicStruct->thisptr;
