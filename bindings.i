@@ -49,16 +49,11 @@ struct pycapnp_DynamicStructReader {
 %extend example::Inner
 {
 
-  %pythoncode %{
-
-    import capnp.lib.capnp as lcapnp
-
-    def write(builder):
-      self.this.write(builder, lcapnp._global_schema_parser)
-
-  %}
-
-  inline void write(PyObject* pyBuilder, PyObject* pySchemaParser) const {
+  inline void write(PyObject* pyBuilder) const
+  {
+    PyObject* capnpModule = PyImport_AddModule("capnp.lib.capnp");
+    PyObject* pySchemaParser = PyObject_GetAttrString(capnpModule,
+                                                      "_global_schema_parser");
     pycapnp_SchemaParser* schemaParser = (pycapnp_SchemaParser*)pySchemaParser;
     schemaParser->thisptr->loadCompiledTypeAndDependencies<InnerProto>();
 
@@ -69,9 +64,15 @@ struct pycapnp_DynamicStructReader {
   }
 
   inline void read(PyObject* pyReader) {
+    PyObject* capnpModule = PyImport_AddModule("capnp.lib.capnp");
+    PyObject* pySchemaParser = PyObject_GetAttrString(capnpModule,
+                                                      "_global_schema_parser");
+    pycapnp_SchemaParser* schemaParser = (pycapnp_SchemaParser*)pySchemaParser;
+    schemaParser->thisptr->loadCompiledTypeAndDependencies<InnerProto>();
+
     pycapnp_DynamicStructReader * dynamicStruct = (pycapnp_DynamicStructReader*)pyReader;
     ::capnp::DynamicStruct::Reader& reader = dynamicStruct->thisptr;
-    InnerProto::Reader innerProto = reader.as<::capnp::AnyStruct>().as<InnerProto>();
+    InnerProto::Reader innerProto = reader.as<InnerProto>();
     self->read(innerProto);
   }
 
