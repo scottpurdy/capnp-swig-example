@@ -7,6 +7,7 @@
 #include <capnp/any.h>
 #include <capnp/dynamic.h>
 #include <capnp/message.h>
+#include <capnp/schema-parser.h>
 
 #include "proto.capnp.h"
 
