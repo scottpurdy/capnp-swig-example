@@ -17,4 +17,4 @@ sdr: test.cpp
 	mv bindings.py example/bindings.py
 	clang++ -c bindings_wrap.cxx -std=c++11 -stdlib=libc++ \
 		-I/System/Library/Frameworks/Python.framework/Versions/Current/include/python2.7/
-	clang++ -lpython -lkj -lcapnp -shared bindings_wrap.o -o example/_bindings.so
+	clang++ -lpython -lkj -lcapnp -lcapnpc -shared bindings_wrap.o proto.capnp.o -o example/_bindings.so
